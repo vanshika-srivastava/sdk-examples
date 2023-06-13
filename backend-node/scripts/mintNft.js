@@ -10,7 +10,7 @@ const mintNft = async () => {
   const data = nftInterface.encodeFunctionData(
     'safeMint', [biconomySmartAccount.address]
   )
-  const nftAddress = "0xdd526eba63ef200ed95f0f0fb8993fe3e20a23d0" // same for goerli and mumbai
+  const nftAddress = "0x1758f42Af7026fBbB559Dc60EcE0De3ef81f665e"
   const transaction = {
     to: nftAddress,
     data: data,
