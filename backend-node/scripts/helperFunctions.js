@@ -1,6 +1,6 @@
-const { BiconomySmartAccount, DEFAULT_ENTRYPOINT_ADDRESS } = require("@biconomy/account");
-const { Bundler } = require("@biconomy/bundler")
-const { BiconomyPaymaster } = require("@biconomy/paymaster")
+const { BiconomySmartAccount, DEFAULT_ENTRYPOINT_ADDRESS } = require("@biconomy-devx/account");
+const { Bundler } = require("@biconomy-devx/bundler")
+const { BiconomyPaymaster } = require("@biconomy-devx/paymaster")
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 const { ethers } = require("ethers");
 const chalk = require('chalk');
@@ -14,11 +14,12 @@ async function createBiconomyAccountInstance() {
     const eoa = await walletProvider.getSigner().getAddress();
     console.log(chalk.blue(`EOA address: ${eoa}`));
 
+    const bundlerApiKey = config.dappAPIKey === "" ? "12345" : config.dappAPIKey
     const bundler = new Bundler({
         bundlerUrl: config.bundlerUrl,
         chainId: config.chainId,
         entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS,
-        apiKey: config.dappAPIKey,
+        apiKey: bundlerApiKey,
     })
 
     const paymaster = new BiconomyPaymaster({
