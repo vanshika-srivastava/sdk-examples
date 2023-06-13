@@ -7,6 +7,7 @@ const { nativeTransfer } = require('./nativeTransfer');
 const { erc20Transfer } = require('./erc20Transfer');
 const { mintNft } = require('./mintNft');
 const { batchMintNft } = require('./batchMintNft');
+const { batchErc20Transfer } = require('./batchErc20Transfer');
 
 yargs
   .scriptName(chalk.green('smartAccount'))
@@ -70,6 +71,29 @@ yargs
     const recipientAddress = argv.to;
     console.log(chalk.magenta(`Transferring ${amount} tokens of ${tokenAddress} to ${recipientAddress}...`));
     erc20Transfer(recipientAddress, amount, tokenAddress);
+  })
+  .command('batchErc20Transfer', chalk.blue('Batch transfer an ERC20 token'), {
+    to: {
+      describe: chalk.cyan('Recipient address'),
+      demandOption: true,
+      type: 'string',
+    },
+    amount: {
+      describe: chalk.cyan('Amount of tokens to transfer'),
+      demandOption: true,
+      type: 'number',
+    },
+    token: {
+      describe: chalk.cyan('Token address'),
+      demandOption: true,
+      type: 'string',
+    },
+  }, (argv) => {
+    const amount = argv.amount;
+    const tokenAddress = argv.token;
+    const recipientAddress = argv.to.split(',');
+    console.log(chalk.magenta(`Transferring ${amount} tokens of ${tokenAddress} to ${recipientAddress}...`));
+    batchErc20Transfer(recipientAddress, amount, tokenAddress);
   })
   // Mint nft token to SmartAccount
   .command('mint', chalk.blue('Mint nft token'), {}, () => {

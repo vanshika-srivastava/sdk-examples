@@ -11,7 +11,7 @@ const nativeTransfer = async (to, amount) => {
     value: ethers.utils.parseEther(amount.toString()),
   }
   // Sending transaction
-  buildAndSendUserOp(biconomySmartAccount, transaction)
+  buildAndSendUserOp(biconomySmartAccount, [transaction])
 }
 
 module.exports = { nativeTransfer };

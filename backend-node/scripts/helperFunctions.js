@@ -22,9 +22,10 @@ async function createBiconomyAccountInstance() {
         apiKey: bundlerApiKey,
     })
 
+    const paymasterApiKey = config.dappAPIKey === "" ? undefined : config.dappAPIKey
     const paymaster = new BiconomyPaymaster({
         paymasterUrl: config.paymasterUrl,
-        apiKey: config.dappAPIKey
+        apiKey: paymasterApiKey
     })
 
     const biconomySmartAccountConfig = {
@@ -42,7 +43,7 @@ async function createBiconomyAccountInstance() {
 
 async function buildAndSendUserOp(biconomySmartAccount, transaction) {
     // Sending transaction
-    const userOp = await biconomySmartAccount.buildUserOp([transaction])
+    const userOp = await biconomySmartAccount.buildUserOp(transaction)
     const userOpResponse = await biconomySmartAccount.sendUserOp(userOp)
     console.log(chalk.green(`userOp Hash: ${userOpResponse.userOpHash}`));
     const transactionDetails = await userOpResponse.wait()

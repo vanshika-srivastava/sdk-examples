@@ -17,7 +17,7 @@ const mintNft = async () => {
   }
 
   // Sending transaction
-  buildAndSendUserOp(biconomySmartAccount, transaction)
+  buildAndSendUserOp(biconomySmartAccount, [transaction])
 }
 
 module.exports = { mintNft };

@@ -16,7 +16,7 @@ const batchMintNft = async () => {
     data: data,
   }
   // Sending transaction
-  buildAndSendUserOp(biconomySmartAccount, transaction)
+  buildAndSendUserOp(biconomySmartAccount, [transaction, transaction])
 
 }
 
