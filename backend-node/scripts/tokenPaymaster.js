@@ -10,7 +10,7 @@ const mintNftPayERC20 = async () => {
   const data = nftInterface.encodeFunctionData(
     'safeMint', [biconomySmartAccount.address]
   )
-  const nftAddress = "0xdd526eba63ef200ed95f0f0fb8993fe3e20a23d0" // same for goerli and mumbai
+  const nftAddress = "0x1758f42Af7026fBbB559Dc60EcE0De3ef81f665e" // same for goerli and mumbai
   const transaction = {
     to: nftAddress,
     data: data,
@@ -25,9 +25,9 @@ const mintNftPayERC20 = async () => {
   console.log('partial userOp')
   console.log(partialUserOp)
   
-  const feeQuotes = await tokenPaymaster?.getPaymasterFeeQuotes(partialUserOp, ["0xda5289fcaaf71d52a80a254da614a192b693e977", "0x27a44456bedb94dbd59d0f0a14fe977c777fc5c3"], "0xda5289fcaaf71d52a80a254da614a192b693e977")
+  const feeQuotes = await tokenPaymaster?.getPaymasterFeeQuotes(partialUserOp, ["0xc1537Ab4f2e0B1c578bAEA06b5bAaE8f87Ce971c", "0x81F9E7a56f6869A9A8c385d1E0701b312439501F"], "0x03bBb5660B8687C2aa453A0e42dCb6e0732b1266")
   console.log('<<<<<<<<<<<<<<<<<< ====================== fee quotes received')
-  // console.log(feeQuotes)
+  console.log(feeQuotes)
 
   console.log(feeQuotes[0].tokenAddress)
 
@@ -45,8 +45,7 @@ const mintNftPayERC20 = async () => {
             "name": "BICONOMY",
             "version": "1.0.0"
         }
-      }
-      */
+      }*/
     }
 
   console.log('partialUserOp is ')
