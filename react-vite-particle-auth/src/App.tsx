@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ParticleAuthModule,
   ParticleProvider,
@@ -10,18 +10,17 @@ const particle = new ParticleAuthModule.ParticleNetwork({
   projectId: "dc8fc110-da0e-4b55-b4c6-04af3aa9cb99",
   clientKey: "cZmQiTMX9UJdPf7Dw9aA65d7skboxDqOAJXzzepq",
   appId: "d461bb0f-9ddb-4f26-981e-a82f574d11af",
-  chainName: "Ethereum", //optional: current chain name, default Ethereum.
-  chainId: 5, //optional: current chain id, default 1.
+  chainName: "Ethereum",
+  chainId: 5,
   wallet: {
-    //optional: by default, the wallet entry is displayed in the bottom right corner of the webpage.
-    displayWalletEntry: true, //show wallet entry when connect particle.
-    defaultWalletEntryPosition: ParticleAuthModule.WalletEntryPosition.BR, //wallet entry position
-    uiMode: "dark", //optional: light or dark, if not set, the default is the same as web auth.
+    displayWalletEntry: true,
+    defaultWalletEntryPosition: ParticleAuthModule.WalletEntryPosition.BR,
+    uiMode: "dark",
     supportChains: [
       { id: 1, name: "Ethereum" },
       { id: 5, name: "Ethereum Goerli" },
-    ], // optional: web wallet support chains.
-    customStyle: {}, //optional: custom wallet style
+    ],
+    customStyle: {},
   },
 });
 
@@ -31,10 +30,13 @@ function App() {
   const [disabled, setDisabled] = useState(false);
   const [scwLoading, setScwLoading] = useState(false);
   const [scwAddress, setScwAddress] = useState("");
-  const [smartAccount, setSmartAccount] = useState<any>(null);
+  const [smartAccount, setSmartAccount] = useState(null);
   const [txHash, setTxHash] = useState("");
 
-  // for particle auth
+  useEffect(() => {
+    setTxHash(""); // Reset transaction hash when account changes
+  }, [account]);
+
   const connect = async () => {
     try {
       setDisabled(true);
@@ -55,13 +57,12 @@ function App() {
       console.error(error);
     }
   };
+
   const disconnect = async () => {
-    // await magic.wallet.disconnect();
     localStorage.removeItem("user");
     setAccount("");
   };
 
-  // for smart-account
   const getSmartAccount = async () => {
     if (particle.auth === undefined) return;
     const particleProvider = new ParticleProvider(particle.auth);
@@ -76,12 +77,7 @@ function App() {
         },
       ],
     });
-    // AA address
     const address = await wallet.getAddress();
-    // EOA address
-    // const address = await smartAccount.getOwner();
-    // load account more info.
-    // const accountInfo = await smartAccount.getAccount();
     setScwAddress(address);
     setSmartAccount(wallet);
   };
@@ -92,7 +88,7 @@ function App() {
       "function safeMint(address _to)",
     ]);
     const data = nftInterface.encodeFunctionData("safeMint", [scwAddress]);
-    const nftAddress = "0xdd526eba63ef200ed95f0f0fb8993fe3e20a23d0"; // nft contract for goerli and mumbai
+    const nftAddress = "0xdd526eba63ef200ed95f0f0fb8993fe3e20a23d0";
     const tx = {
       to: nftAddress,
       data: data,
@@ -106,9 +102,9 @@ function App() {
     const signer = provider.getSigner();
     const txResponse = await signer.sendTransaction(tx);
     console.log("Tx Response", txResponse);
-    const txReciept = await txResponse.wait();
-    console.log("Tx hash", txReciept.transactionHash);
-    setTxHash(txReciept.transactionHash);
+    const txReceipt = await txResponse.wait();
+    console.log("Tx hash", txReceipt.transactionHash);
+    setTxHash(txReceipt.transactionHash);
     setScwLoading(false);
   };
 
